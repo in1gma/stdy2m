@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import os
+import binascii
 # xor example test
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
@@ -31,8 +33,23 @@ def test_xor_network():
         res = net.activate(e)
         print(res)
 
-def main():
-    test_xor_network() # do smthg
+def read_files():
+    result = {}
+    folder = './test/'
+    bytes = 3 # 2 ~ 4
+    for filename in os.listdir(folder):
+        file = open(folder + filename, 'r')
+        signature = file.read(bytes)
+        file.close()
+        hex_signature = binascii.hexlify(signature)
+        # print('{0} {1} {2}'.format(filename, signature, hex_signature))
+        result[filename] = hex_signature
+    return result
 
-if __name__ == "__main__":
+def main():
+    # test_xor_network() # do smthg
+    test = read_files()
+    print(test)
+
+if __name__ == '__main__':
     main()
