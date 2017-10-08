@@ -1,7 +1,9 @@
 docs/
 test/
+learn/
 *.swp
 *.swl
 *.swm
 *.swn
 *.swo
+.gdb_history
