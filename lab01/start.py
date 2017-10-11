@@ -5,7 +5,7 @@ import os
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.datasets import ClassificationDataSet #SupervisedDataSet
-from pybrain.structure import LinearLayer #TanhLayer
+#from pybrain.structure import LinearLayer #TanhLayer
 
 import magic # for teach
 
@@ -46,12 +46,12 @@ def brain(net, data):
         result = list(net.activate(item[1]))
         m = max(result)
         i = result.index(m)
-        print('out: {0} is {1}, {2}'.format(m, keys[i], item[0]))
+        print('out: {0} is {1}, {2} ({3})'.format(m, keys[i], item[0], item[2]))
 
 def read_file(nbytes, filename):
     buf = open(filename, 'r').read(nbytes)
     known_type = magic.from_buffer(buf, mime=True)
-    return known_type, [ord(x) for x in buf]
+    return known_type, [ord(x) for x in buf], filename
 
 def read_files(nbytes, folder):
     return map(lambda f: read_file(nbytes, folder + f), os.listdir(folder))
