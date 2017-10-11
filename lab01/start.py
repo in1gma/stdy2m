@@ -9,11 +9,16 @@ from pybrain.structure import LinearLayer #TanhLayer
 
 import magic # for teach
 
-def build_net(nbytes, learn_data):
+def _get_keys(dic, i):
     keys = []
-    for item in learn_data:
-        if item[0] not in keys:
-            keys.append(item[0])
+    for item in dic:
+        if item[i] not in keys:
+            keys.append(item[i])
+    return keys
+
+
+def build_net(nbytes, learn_data):
+    keys = _get_keys(learn_data, 0)
 
     net = buildNetwork(nbytes, 10, len(keys))#, hiddenclass=LinearLayer)
 
@@ -35,10 +40,7 @@ def build_net(nbytes, learn_data):
     return net
 
 def brain(net, data):
-    keys = []
-    for item in data:
-        if item[0] not in keys:
-            keys.append(item[0])
+    keys = _get_keys(data, 0)
 
     for item in data:
         result = list(net.activate(item[1]))
@@ -49,7 +51,6 @@ def brain(net, data):
 def read_file(nbytes, filename):
     buf = open(filename, 'r').read(nbytes)
     known_type = magic.from_buffer(buf, mime=True)
-    #return known_type, buf
     return known_type, [ord(x) for x in buf]
 
 def read_files(nbytes, folder):
