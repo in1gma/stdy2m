@@ -1,13 +1,13 @@
 #!/usr/bin/python
 
 import os
+import sys
 
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
-from pybrain.datasets import ClassificationDataSet #SupervisedDataSet
-#from pybrain.structure import LinearLayer #TanhLayer
+from pybrain.datasets import ClassificationDataSet
 
-import magic # for teach
+import magic
 
 def _get_keys(dic, i):
     keys = []
@@ -20,8 +20,7 @@ def _get_keys(dic, i):
 def build_net(nbytes, learn_data):
     keys = _get_keys(learn_data, 0)
 
-    net = buildNetwork(nbytes, 10, len(keys))#, hiddenclass=LinearLayer)
-
+    net = buildNetwork(nbytes, 10, len(keys))
     ds = ClassificationDataSet(nbytes, nb_classes=len(keys), class_labels=keys)
 
     for item in learn_data:
@@ -34,8 +33,6 @@ def build_net(nbytes, learn_data):
     trainer.setData(ds)
 
     trainer.trainUntilConvergence(maxEpochs=1000)
-    #for i in xrange(1000):
-     #   trainer.train()
 
     return net
 
@@ -57,9 +54,9 @@ def read_files(nbytes, folder):
     return map(lambda f: read_file(nbytes, folder + f), os.listdir(folder))
 
 def main():
-    nbytes = 128
-    learn_data = read_files(nbytes, './learn/')
-    test_data = read_files(nbytes, './test/')
+    nbytes = int(sys.argv[1])
+    learn_data = read_files(nbytes, sys.argv[2])
+    test_data = read_files(nbytes, sys.argv[3])
     net = build_net(nbytes, learn_data)
 
     print('repeat learn data:')
