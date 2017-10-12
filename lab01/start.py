@@ -6,6 +6,7 @@ import sys
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.datasets import ClassificationDataSet
+from pybrain.structure.modules import SigmoidLayer
 
 import magic
 
@@ -20,7 +21,7 @@ def _get_keys(dic, i):
 def build_net(nbytes, learn_data):
     keys = _get_keys(learn_data, 0)
 
-    net = buildNetwork(nbytes, 10, len(keys))
+    net = buildNetwork(nbytes, nbytes/len(keys), len(keys), hiddenclass=SigmoidLayer) #nbytes/len(keys/3)
     ds = ClassificationDataSet(nbytes, nb_classes=len(keys), class_labels=keys)
 
     for item in learn_data:
