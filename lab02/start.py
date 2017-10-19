@@ -3,13 +3,16 @@
 import os
 import sys
 
-def read_files(path):
-    for filename in os.listdir(path):
-        buf = open(os.path.join(path, filename), 'r').read()
+def read_files(folder):
+    for filename in os.listdir(folder):
+        try:
+            buf = open(os.path.join(folder, filename), 'r').read()
+        except IsADirectoryError:
+            continue
 
 def main():
-    path = sys.argv[1]
-    read_files(path)
+    folder = sys.argv[1]
+    read_files(folder)
 
 if __name__ == '__main__':
     main()
