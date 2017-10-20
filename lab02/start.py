@@ -25,7 +25,11 @@ def annotate_it(folder, language, sentences_count):
 def main():
     folder = sys.argv[1]
     sentences_count = sys.argv[2]
-    annotate_it(folder, 'english', sentences_count) # english wa default language
+    try:
+        language = sys.argv[3]
+    except IndexError:
+        language = 'english' # english wa default language
+    annotate_it(folder, language, sentences_count)
 
 if __name__ == '__main__':
     main()
