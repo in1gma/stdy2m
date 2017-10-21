@@ -2,6 +2,7 @@
 
 import os
 import sys
+import re
 
 from pylatexenc.latex2text import LatexNodes2Text
 from sumy.nlp.tokenizers import Tokenizer
@@ -21,10 +22,14 @@ def annotate_it(folder, language, sentences_count):
     # text_rank_summarizer.stop_words = get_stop_words(language)
     for filename in os.listdir(folder):
         with open(os.path.join(folder, filename), 'r+') as file:
-            text = tex2text.latex_to_text(file.read())
+            raw = file.read()
+            text = tex2text.latex_to_text(raw)
             parser = PlaintextParser(text, tokenizer)
             summary = summarizer(parser.document, sentences_count)
             # rated_sentences = text_rank_summarizer.rate_sentences(parser.document) # check rank
+            # add summary to abstract or sciabstract after maketitle or before first section
+            abstract = re.sub(r'\\begin{abstract}(.*?)\\end{abstract}', 'test', raw, re.DOTALL)
+            print(abstract)
 
 def main():
     folder = sys.argv[1]
