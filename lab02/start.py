@@ -25,9 +25,15 @@ def annotate_it(folder, language, sentences_count):
             raw = file.read()
             text = tex2text.latex_to_text(raw)
             parser = PlaintextParser(text, tokenizer)
-            summary = summarizer(parser.document, sentences_count)
+            summary = '\n'.join([str(s) for s in summarizer(parser.document, sentences_count)]);
             # rated_sentences = text_rank_summarizer.rate_sentences(parser.document) # check rank
-            abstract = re.sub(r'(\\begin{abstract}\n*)(.*?)(\n*\\end{abstract})', '\\1 {0} \\3'.format('\n'.join([str(s) for s in summary])), raw, re.DOTALL)
+
+            pattern = re.compile(r'(\\begin{abstract}\n*)(.*?)(\n*\\end{abstract})', re.DOTALL)
+            match = pattern.search(raw)
+            if match is None:
+                with_abstract = re.sub(r'(\\maketitle)', '\\1 \n{0}\n{1}\n{2}'.format('\\\\begin{abstract}', summary, '\\end{abstract}'), raw)
+            else:
+                with_abstract = pattern.sub('\\1 {0} \\3'.format(summary), raw)
 
 def main():
     folder = sys.argv[1]
