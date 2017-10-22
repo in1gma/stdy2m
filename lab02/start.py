@@ -27,9 +27,7 @@ def annotate_it(folder, language, sentences_count):
             parser = PlaintextParser(text, tokenizer)
             summary = summarizer(parser.document, sentences_count)
             # rated_sentences = text_rank_summarizer.rate_sentences(parser.document) # check rank
-            # add summary to abstract or sciabstract after maketitle or before first section
-            abstract = re.sub(r'\\begin{abstract}(.*?)\\end{abstract}', 'test', raw, re.DOTALL)
-            print(abstract)
+            abstract = re.sub(r'(\\begin{abstract}\n*)(.*?)(\n*\\end{abstract})', '\\1 {0} \\3'.format('\n'.join([str(s) for s in summary])), raw, re.DOTALL)
 
 def main():
     folder = sys.argv[1]
