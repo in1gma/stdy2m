@@ -35,6 +35,9 @@ def annotate_it(folder, language, sentences_count):
             else:
                 with_abstract = pattern.sub('\\1 {0} \\3'.format(summary), raw)
 
+            file.seek(0)
+            file.write(with_abstract)
+
 def main():
     folder = sys.argv[1]
     sentences_count = sys.argv[2]
