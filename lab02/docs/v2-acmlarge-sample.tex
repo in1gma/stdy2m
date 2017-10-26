@@ -45,27 +45,16 @@ SEAN FOGARTY
 %       currently affiliated with NASA.
 
 \begin{abstract}
-It has been previously proposed that understanding the mechanisms of
-contour perception can provide a theory for why some flow-rendering
-methods allow for better judgments of advection pathways than others.
-In the present article, we develop this theory through a numerical
-model of the primary visual cortex of the brain (Visual Area 1) where
-contour enhancement is understood to occur according to most
-neurological theories. We apply a two-stage model of contour
-perception to various visual representations of flow fields evaluated
-using the advection task of Laidlaw et al. [2001]. In the first
-stage, contour {enhancement} is modeled based on Li's cortical model
-[Li 1998]. In the second stage, a model of streamline {tracing} is
-proposed, designed to support the advection task. We examine the
-predictive power of the model by comparing its performance to that of
-human subjects on the advection task with four different
-visualizations. The results show the same overall pattern for humans
-and the model. In both cases, the best performance was obtained with
-an aligned streamline-based method, which tied with a LIC-based
-method. Using a regular or jittered grid of arrows produced worse
-results. The model yields insights into the relative strengths of
-different flow visualization methods for the task of visualizing
-advection pathways.
+ We apply a two-stage model of contour perception to various visual representations of flow fields evaluated using the advection task of Laidlaw et al. [2001].
+The results show the same overall pattern for humans and the model.
+In this article, we show that a model of neural processing in the visual cortex  can be used to predict which flow representation methods will be better.
+We apply the model to a set of 2D flow visualization methods that were previously studied by Laidlaw2001.
+Finally we discuss how this work relates to other work that has applied perceptual modeling to data visualization and suggest other uses of the general method.
+Laidlaw et al.'s experiment was carried out on humans but, in our work, we apply this evaluation technique to humans as well as to our model of the human visual system and use a streamline tracing algorithm to trace the path of the particle.
+Contour tracing algorithms are generally designed to trace out the boundary of some shape but a streamline tracing algorithm must also be able able to produce a streamline in a field of disconnected contours, such as is the case with the regular arrows.
+Jittered arrows (Figure <ref>) This visualization is similar to the regular arrows, but the arrows are moved a small random distance from the regular locations.
+Discussion The overall agreement between the pattern of results for human observers and the V1-based model provides strong support of the perceptual theory we outlined in the introduction.
+The number of invalid trials for each subject is presented by feedback condition in Figure 12. 
 \end{abstract}
 
 \category{H.5.2}{Information Interfaces and Presentation}{User
@@ -784,6 +773,17 @@ stop finger movement. When motion feedback is available, subjects are
 likely focusing more on the feedback than on the forces applied,
 since the feedback allows them to achieve better accuracy. Thus, at
 the end of a trial, subjects are most likely using this feedback as
+an indicator of zero velocity rather than attending to the applied
+force. When visual feedback is available, it is easy to determine
+whether the finger is moving or not; however, when only
+proprioceptive feedback is available, the finger can be moving slowly
+without the subject being aware of its motion. This explanation would
+result in a larger number of failed trials for the NV$+$P condition
+than for any other, as observed.
+
+\end{document}
+% End of v2-acmlarge-sample.tex (March 2012) - Gerry Murray, ACM
+ likely using this feedback as
 an indicator of zero velocity rather than attending to the applied
 force. When visual feedback is available, it is easy to determine
 whether the finger is moving or not; however, when only

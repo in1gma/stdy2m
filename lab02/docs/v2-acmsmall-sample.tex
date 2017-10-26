@@ -59,24 +59,16 @@ TAREK F. ABDELZAHER
 %       currently affiliated with NASA.
 
 \begin{abstract}
-Multifrequency media access control has been well understood in
-general wireless ad hoc networks, while in wireless sensor networks,
-researchers still focus on single frequency solutions. In wireless
-sensor networks, each device is typically equipped with a single
-radio transceiver and applications adopt much smaller packet sizes
-compared to those in general wireless ad hoc networks. Hence, the
-multifrequency MAC protocols proposed for general wireless ad hoc
-networks are not suitable for wireless sensor network applications,
-which we further demonstrate through our simulation experiments. In
-this article, we propose MMSN, which takes advantage of
-multifrequency availability while, at the same time, takes into
-consideration the restrictions of wireless sensor networks. Through
-extensive experiments, MMSN exhibits the prominent ability to utilize
-parallel transmissions among neighboring nodes. When multiple physical
-frequencies are available, it also achieves increased energy
-efficiency, demonstrating the ability to work against radio
-interference and the tolerance to a wide range of measured time
-synchronization errors.
+ When multiple physical frequencies are available, it also achieves increased energy efficiency, demonstrating the ability to work against radio interference and the tolerance to a wide range of measured time synchronization errors.
+A. Stankovic, Computer Science Department, University of Virginia; T. Yan, Eaton Innovation Center; T. He, Computer Science Department, University of Minnesota; C. Huang, Google; T. F. Abdelzaher, (Current address) NASA Ames Research Center, Moffett Field, California 94035.
+* To the best of our knowledge, the MMSN protocol is the first multifrequency MAC protocol especially designed for WSNs, in which each device is equipped with a single radio transceiver and the MAC layer packet size is very small.
+As Algorithm <ref> states, for each frequency number, each node calculates a random number (Rnd_α) for itself and a random number (Rnd_β) for each of its two-hop neighbors with the same pseudorandom number generator.
+Node α's ID (ID_α), and node α's neighbors' IDs within two communication hops.The frequency number (FreNum_α) node α gets assigned.
+Why don't we just map nodes' IDs within two hops into a group of frequency numbers and assign those numbers to all nodes within two hops?
+Our simulation is configured according to the settings in Table <ref>.
+Node Number     & 289
+Radio Range     & 20m--45m Source:This is a table sourcenote.
+In this appendix, we measure the channel switching time of Micaz [CROSSBOW] sensor devices. 
 \end{abstract}
 
 \category{C.2.2}{Computer-Communication Networks}{Network Protocols}
@@ -478,6 +470,13 @@ obvious changes. (In our experiments, all values are in the range of
 The primary consumer of energy in WSNs is idle listening. The key to
 reduce idle listening is executing low duty-cycle on nodes. Two
 primary approaches are considered in controlling duty-cycles in the
+MAC layer.
+
+\end{document}
+% End of v2-acmsmall-sample.tex (March 2012) - Gerry Murray, ACM
+
+
+sidered in controlling duty-cycles in the
 MAC layer.
 
 \end{document}
