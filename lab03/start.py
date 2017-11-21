@@ -5,12 +5,20 @@ import os
 
 from pylatexenc.latex2text import LatexNodes2Text
 
+from nltk import wordpunct_tokenize
+from nltk.collocations import TrigramCollocationFinder as CollocationFinder
+from nltk.collocations import TrigramAssocMeasures as AssocMeasures
+
 def bib_it(filename, language):
 	tex2text = LatexNodes2Text()
+	measures = AssocMeasures()
 	with open(filename, 'r+') as file:
 		raw = file.read()
 		text = tex2text.latex_to_text(raw)
-		print(text)
+		finder = CollocationFinder.from_words(wordpunct_tokenize(text))#, window_size=3)
+		# finder.apply_freq_filter(1)
+		# print(finder.score_ngrams(measures.raw_freq))
+		print(finder.nbest(measures.pmi, 100)) # likelihood_ratio ~ 1000
 
 def main():
 	filename = sys.argv[1]
