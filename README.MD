@@ -22,4 +22,4 @@
 > Выделить коллокации, найти там несловарные слова. Коллокацию с несловарными словами найти в elibrary или citeseerx. Оттуда выделить bibtex (например с 1-го результата поиска)
 
 **How to run:**
->  python start.py file.tex
+>  python start.py file.tex output.bib
