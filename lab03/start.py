@@ -8,20 +8,25 @@ from pylatexenc.latex2text import LatexNodes2Text
 from nltk import wordpunct_tokenize
 from nltk.collocations import TrigramCollocationFinder as CollocationFinder
 from nltk.collocations import TrigramAssocMeasures as AssocMeasures
-from nltk.corpus import stopwords as Stopwords
+from nltk.corpus import stopwords
+from nltk.corpus import words
+from nltk.stem.wordnet import WordNetLemmatizer as Lemmatizer
 
 def bib_it(filename, language):
 	tex2text = LatexNodes2Text()
 	measures = AssocMeasures()
-	stopwords = Stopwords.words(language)
-	with open(filename, 'r+') as file:
+	stop_words = stopwords.words(language)
+	allow_words = words.words()
+	lemmatizer = Lemmatizer()
+	with open(filename, 'r') as file:
 		raw = file.read()
 		text = tex2text.latex_to_text(raw)
-		tokens = [x for x in wordpunct_tokenize(text) if x.lower() not in stopwords]
-		finder = CollocationFinder.from_words(tokens)#, window_size=3)
-		# finder.apply_freq_filter(1)
-		# print(finder.score_ngrams(measures.raw_freq))
-		print(finder.nbest(measures.pmi, 100)) # likelihood_ratio ~ 1000
+		tokens = [x for x in wordpunct_tokenize(text) if x.lower() not in stop_words]
+		finder = CollocationFinder.from_words(tokens)
+		collocations = finder.nbest(measures.pmi, 100)
+		for collocation in collocations:
+			if any([word for word in collocation if lemmatizer.lemmatize(word.lower()) not in allow_words]):
+				string = ' '.join(collocation)
 
 def main():
 	filename = sys.argv[1]
