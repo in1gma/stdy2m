@@ -15,6 +15,8 @@ from nltk.stem.wordnet import WordNetLemmatizer as Lemmatizer
 import urllib
 from bs4 import BeautifulSoup
 
+import time
+
 def bib_it(filename_input, filename_output, language, search):
 	tex2text = LatexNodes2Text()
 	measures = AssocMeasures()
@@ -44,6 +46,7 @@ def bib_it(filename_input, filename_output, language, search):
 		bib_file.close()
 
 def citeseerx_search(query):
+	time.sleep(0.5)
 	site = 'http://citeseerx.ist.psu.edu'
 
 	# first request
