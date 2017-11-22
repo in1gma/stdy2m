@@ -21,8 +21,8 @@ def bib_it(filename, language):
 	with open(filename, 'r') as file:
 		raw = file.read()
 		text = tex2text.latex_to_text(raw)
-		tokens = [x for x in wordpunct_tokenize(text) if x.lower() not in stop_words]
-		finder = CollocationFinder.from_words(tokens)
+		finder = CollocationFinder.from_words(wordpunct_tokenize(text))
+		finder.apply_word_filter(lambda word: len(word) < 3 or word.lower() in stop_words)
 		collocations = finder.nbest(measures.pmi, 100)
 		for collocation in collocations:
 			if any([word for word in collocation if lemmatizer.lemmatize(word.lower()) not in allow_words]):
