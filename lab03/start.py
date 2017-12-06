@@ -5,6 +5,7 @@ import os
 import re
 
 from nltk import word_tokenize
+from nltk import Text
 from nltk.collocations import TrigramCollocationFinder as CollocationFinder
 from nltk.collocations import TrigramAssocMeasures as AssocMeasures
 from nltk.corpus import stopwords
@@ -25,7 +26,7 @@ def bib_it(filename_input, filename_output, language, search):
 	allow_words = words.words()
 	lemmatizer = Lemmatizer()
 
-	pattern = r'(\\begin{document}\n*)(.*?)(\n*\\end{document})'
+	pattern = r'(\\begin{document}\n*\\maketitle\n*)(.*?)(\n*\\end{document})'
 
 	with open(filename_input, 'r+') as file:
 		raw = file.read()
@@ -48,16 +49,18 @@ def bib_it(filename_input, filename_output, language, search):
 
 		for collocation in collocations:
 			if any([word for word in collocation if lemmatizer.lemmatize(word.lower()) not in allow_words]):
-				pass
-				# print(collocation)
-				# string = ' '.join(collocation)
-				# bibtex = "::"search(string)
+				string = ' '.join(collocation)
+				bibtex = search(string)
 
-				# bib_file.write('@comment{{{0}}}\n{1}\n'.format(string, bibtex))
+				bib_file.write('@comment{{{0}}}\n{1}\n'.format(string, bibtex))
 
 		bib_file.close()
 
-		new = re.compile(pattern, re.DOTALL).sub('\\1 {0} \\3'.format('summary'), raw)
+		with_cite = ''
+
+		with_cite += '\n\\\\bibliographystyle{plain}\n\\\\bibliography{bibfile}'
+
+		new = re.compile(pattern, re.DOTALL).sub('\\1 {0} \\3'.format(with_cite), raw)
 		file.seek(0)
 		file.truncate()
 		file.write(new)
