@@ -4,15 +4,8 @@ import sys
 import os
 import re
 
-from nltk import word_tokenize
 from nltk import Text
-from nltk.collocations import TrigramCollocationFinder as CollocationFinder
-from nltk.collocations import TrigramAssocMeasures as AssocMeasures
-from nltk.corpus import stopwords
-from nltk.corpus import words
-from nltk.stem.wordnet import WordNetLemmatizer as Lemmatizer
-
-from six import iteritems
+from nltk.tokenize.moses import MosesTokenizer#, MosesDetokenizer
 
 import urllib
 from bs4 import BeautifulSoup
@@ -20,43 +13,34 @@ from bs4 import BeautifulSoup
 import time
 
 def bib_it(filename_input, filename_output, language, search):
-	measures = AssocMeasures()
-
-	stop_words = stopwords.words(language)
-	allow_words = words.words()
-	lemmatizer = Lemmatizer()
+	tokenizer = MosesTokenizer()
+	# detokenizer = MosesDetokenizer()
 
 	pattern = r'(\\begin{document}\n*\\maketitle\n*)(.*?)(\n*\\end{document})'
 
 	with open(filename_input, 'r+') as file:
 		raw = file.read()
-		text = re.findall(pattern, raw, re.DOTALL)[0][1]
+		raw_text = re.findall(pattern, raw, re.DOTALL)[0][1]
 
-		tokens = word_tokenize(text)
-		finder = CollocationFinder.from_words(tokens)
-
-		collocations = []
-
-		for ngram, freq in iteritems(finder.ngram_fd):
-			if (not any(len(word) < 3 or word.lower() in stop_words for word in ngram)):
-				score = finder.score_ngram(measures.pmi, *ngram)
-				# print(ngram, score)
-				# print(ngram, freq)
-
-		# collocations = finder.nbest(measures.pmi, 10)
+		tokens = tokenizer.tokenize(raw_text)
+		t = Text(tokens)
+		t.collocations()
 
 		bib_file = open(filename_output, 'w')
+		bib_file.truncate()
 
-		for collocation in collocations:
-			if any([word for word in collocation if lemmatizer.lemmatize(word.lower()) not in allow_words]):
-				string = ' '.join(collocation)
-				bibtex = search(string)
+		for collocation in t._collocations:
+			string = ' '.join(collocation)
+			bibtex = search(string)
 
-				bib_file.write('@comment{{{0}}}\n{1}\n'.format(string, bibtex))
+			name = re.findall(r'@\w+{(\w+)', bibtex)[0]
+			raw_text = raw_text.replace(string, '{0} \\cite{{{1}}}'.format(string, name))
+
+			bib_file.write('\n' + ' '.join(bibtex.split()) + '\n')
 
 		bib_file.close()
 
-		with_cite = ''
+		with_cite = raw_text # detokenizer.detokenize(t.tokens, return_str=True)
 
 		with_cite += '\n\\\\bibliographystyle{plain}\n\\\\bibliography{bibfile}'
 
@@ -66,7 +50,7 @@ def bib_it(filename_input, filename_output, language, search):
 		file.write(new)
 
 def citeseerx_search(query):
-	# time.sleep(0.5)
+	time.sleep(0.5)
 	site = 'http://citeseerx.ist.psu.edu'
 
 	# first request
