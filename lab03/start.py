@@ -34,7 +34,7 @@ def bib_it(filename_input, filename_output, language, search):
 			bibtex = search(string)
 
 			name = re.findall(r'@\w+{(\w+)', bibtex)[0]
-			raw_text = raw_text.replace(string, '{0} \\cite{{{1}}}'.format(string, name))
+			raw_text = raw_text.replace(string, '{0} \\cite{{{1}}}'.format(string, name), 1)
 
 			bib_file.write('\n' + ' '.join(bibtex.split()) + '\n')
 
